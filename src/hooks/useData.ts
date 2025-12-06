@@ -22,11 +22,15 @@ import {
   updateFollowUp,
   deleteFollowUp,
   updateWorkflow,
+  createUser,
+  updateUser,
+  deleteUser,
   type Lead,
   type Property,
   type SiteVisit,
   type FollowUp,
   type Workflow,
+  type User,
 } from '@/services/dataService';
 
 export const useLeads = () =>
@@ -184,6 +188,36 @@ export const useDeleteFollowUp = () => {
     mutationFn: deleteFollowUp,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['followUps'] });
+    },
+  });
+};
+
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
+};
+
+export const useUpdateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: Partial<User> }) => updateUser(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
+};
+
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
     },
   });
 };

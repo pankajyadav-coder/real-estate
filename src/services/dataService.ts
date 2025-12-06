@@ -28,6 +28,7 @@ import {
   transformPropertyToSupabase,
   transformSiteVisitToSupabase,
   transformFollowUpToSupabase,
+  transformUserToSupabase,
   transformWorkflowToSupabase,
 } from '@/lib/dataTransform';
 
@@ -330,6 +331,28 @@ export async function updateFollowUp(id: string, followUp: Partial<FollowUp>): P
 export async function deleteFollowUp(id: string): Promise<void> {
   if (!supabase) throw new Error('Supabase not configured');
   const { error } = await supabase.from('follow_ups').delete().eq('id', id);
+  if (error) throw error;
+}
+
+export async function createUser(user: Partial<User>): Promise<User> {
+  if (!supabase) throw new Error('Supabase not configured');
+  const data = transformUserToSupabase(user);
+  const { data: result, error } = await supabase.from('users').insert(data).select().single();
+  if (error) throw error;
+  return transformUser(result);
+}
+
+export async function updateUser(id: string, user: Partial<User>): Promise<User> {
+  if (!supabase) throw new Error('Supabase not configured');
+  const data = transformUserToSupabase(user);
+  const { data: result, error } = await supabase.from('users').update(data).eq('id', id).select().single();
+  if (error) throw error;
+  return transformUser(result);
+}
+
+export async function deleteUser(id: string): Promise<void> {
+  if (!supabase) throw new Error('Supabase not configured');
+  const { error } = await supabase.from('users').delete().eq('id', id);
   if (error) throw error;
 }
 

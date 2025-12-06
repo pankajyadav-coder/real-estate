@@ -265,3 +265,15 @@ export function transformWorkflowToSupabase(workflow: Partial<Workflow>): Record
   return result;
 }
 
+export function transformUserToSupabase(user: Partial<User>): Record<string, unknown> {
+  const result: Record<string, unknown> = {};
+  if (user.name !== undefined) result.name = user.name;
+  if (user.email !== undefined) result.email = user.email;
+  if (user.phone !== undefined) result.phone = user.phone;
+  if (user.role !== undefined) result.role = user.role;
+  if (user.avatar !== undefined) result.avatar = user.avatar;
+  if (user.leadsAssigned !== undefined) result.leads_assigned = user.leadsAssigned;
+  if (user.dealsClosed !== undefined) result.deals_closed = user.dealsClosed;
+  return result;
+}
+
